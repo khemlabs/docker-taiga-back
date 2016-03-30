@@ -94,7 +94,7 @@ class ProjectImporterViewSet(mixins.ImportThrottlingPolicyMixin, CreateModelMixi
         is_private = data.get('is_private', False)
         (enough_slots, not_enough_slots_error) = users_service.has_available_slot_for_project(
             self.request.user,
-            project=Project(is_private=is_private, id=None)
+            Project(is_private=is_private, id=None)
         )
         if not enough_slots:
             raise exc.NotEnoughSlotsForProject(is_private, 1, not_enough_slots_error)
@@ -118,8 +118,8 @@ class ProjectImporterViewSet(mixins.ImportThrottlingPolicyMixin, CreateModelMixi
             members = len(data['memberships'])
             (enough_slots, not_enough_slots_error) = users_service.has_available_slot_for_project(
                 self.request.user,
-                project=Project(is_private=is_private, id=None),
-                members=max(members, 1)
+                Project(is_private=is_private, id=None),
+                members
             )
             if not enough_slots:
                 raise exc.NotEnoughSlotsForProject(is_private, max(members, 1), not_enough_slots_error)
@@ -231,8 +231,8 @@ class ProjectImporterViewSet(mixins.ImportThrottlingPolicyMixin, CreateModelMixi
         members = len(dump.get("memberships", []))
         (enough_slots, not_enough_slots_error) = users_service.has_available_slot_for_project(
             user,
-            project=Project(is_private=is_private, id=None),
-            members=max(members, 1)
+            Project(is_private=is_private, id=None),
+            members
         )
         if not enough_slots:
             raise exc.NotEnoughSlotsForProject(is_private, max(members, 1), not_enough_slots_error)
